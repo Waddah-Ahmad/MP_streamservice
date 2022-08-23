@@ -10,23 +10,22 @@ WORKDIR /usr/src/app
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends postgresql-client \
+    netcat
 # install dependencies
 RUN pip install --upgrade pip 
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # copy project
-COPY . /usr/src/app
-RUN chmod +x /usr/src/app/entrypoint.sh
+COPY . .
+RUN chmod +x ./entrypoint.sh
 
 EXPOSE 9001
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends postgresql-client \
-    netcat
+EXPOSE 5432
 
 
-COPY entrypoint.sh /usr/src/app/
-RUN chmod +x /usr/src/app/entrypoint.sh
+
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 #CMD ["python", "manage.py", "runserver" , "0.0.0.0:8000"]
