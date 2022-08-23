@@ -10,7 +10,7 @@ from .serializers import MatchesSerializer
 
 # Create your views here.
 class ListMatches(generics.ListCreateAPIView):
-    queryset = Matches.objects.values_list('title','description')
+    queryset = Matches.objects.all()
     serializer_class = MatchesSerializer
 
 class DetailMatches(generics.RetrieveUpdateDestroyAPIView):
